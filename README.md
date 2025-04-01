@@ -29,7 +29,7 @@ If you are a hubber and are interested in shipping new commands for the CLI, che
 | ----------------- | ----------------- |
 | `brew install gh` | `brew upgrade gh` |
 
-#### MacPorts
+#### Masport
 
 | Install:               | Upgrade:                                       |
 | ---------------------- | ---------------------------------------------- |
