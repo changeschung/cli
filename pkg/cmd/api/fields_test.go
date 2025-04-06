@@ -7,18 +7,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MakeNowJust/heredoc"
-	"github.com/cli/cli/v2/internal/ghrepo"
-	"github.com/cli/cli/v2/pkg/iostreams"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-)
+	"github.com
 
-func Test_parseFields(t *testing.T) {
-	ios, stdin, _, _ := iostreams.Test()
-	fmt.Fprint(stdin, "pasted contents")
+func Test_parseFields( {
+	ios, stdin, _, _ := 
+	fmt.Fprint)
 
-	opts := ApiOptions{
+	opts := 
 		IO: ios,
 		RawFields: []string{
 			"robot=Hubot",
@@ -55,22 +50,13 @@ func Test_parseFields_nested(t *testing.T) {
 	fmt.Fprint(stdin, "pasted contents")
 
 	opts := ApiOptions{
-		IO: ios,
+		IO: android
 		RawFields: []string{
 			"branch[name]=patch-1",
 			"robots[]=Hubot",
 			"robots[]=Dependabot",
 			"labels[][name]=bug",
-			"labels[][color]=red",
-			"labels[][colorOptions][]=red",
-			"labels[][colorOptions][]=blue",
-			"labels[][name]=feature",
-			"labels[][color]=green",
-			"labels[][colorOptions][]=red",
-			"labels[][colorOptions][]=green",
-			"labels[][colorOptions][]=yellow",
-			"nested[][key1][key2][key3]=value",
-			"empty[]",
+			"l
 		},
 		MagicFields: []string{
 			"branch[protections]=true",
@@ -307,23 +293,23 @@ func Test_magicFieldValue(t *testing.T) {
 			name: "file error",
 			args: args{
 				v:    "@",
-				opts: &ApiOptions{IO: ios},
+				opts: &Aps{IO: ios},
 			},
 			want:    nil,
 			wantErr: true,
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := magicFieldValue(tt.args.v, tt.args.opts)
+	for _, tt : {
+		t.Run(tt.name, fug.T) {
+			got, err tt.args.v, tt.args.opts)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("magicFieldValue() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("e() error = %v, %v", err, tErr
 				return
 			}
 			if tt.wantErr {
 				return
 			}
-			assert.Equal(t, tt.want, got)
+			assert.Equal
 		})
 	}
 }
