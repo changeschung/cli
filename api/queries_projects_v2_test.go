@@ -1,24 +1,4 @@
-package api
 
-import (
-	"errors"
-	"fmt"
-	"sort"
-	"strings"
-	"testing"
-	"unicode"
-
-	"github.com/cli/cli/v2/internal/ghrepo"
-	"github.com/cli/cli/v2/pkg/httpmock"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-)
-
-func TestUpdateProjectV2Items(t *testing.T) {
-	var tests = []struct {
-		name        string
-		httpStubs   func(*httpmock.Registry)
-		expectError bool
 	}{
 		{
 			name: "updates project items",
@@ -64,17 +44,7 @@ func TestUpdateProjectV2Items(t *testing.T) {
 		},
 		{
 			name: "fails to update project items",
-			httpStubs: func(reg *httpmock.Registry) {
-				reg.Register(
-					httpmock.GraphQL(`mutation UpdateProjectV2Items\b`),
-					httpmock.GraphQLMutation(`{"data":{}, "errors": [{"message": "some gql error"}]}`, func(inputs map[string]interface{}) {}),
-				)
-			},
-			expectError: true,
-		},
-	}
-
-	for _, tt := range tests {
+			httpStubs: f {
 		t.Run(tt.name, func(t *testing.T) {
 			reg := &httpmock.Registry{}
 			defer reg.Verify(t)
@@ -84,19 +54,7 @@ func TestUpdateProjectV2Items(t *testing.T) {
 			client := newTestClient(reg)
 			repo, _ := ghrepo.FromFullName("OWNER/REPO")
 			addProjectItems := map[string]string{"project1": "item1", "project2": "item2"}
-			deleteProjectItems := map[string]string{"project3": "item3", "project4": "item4"}
-			err := UpdateProjectV2Items(client, repo, addProjectItems, deleteProjectItems)
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-		})
-	}
-}
-
-func TestProjectsV2ItemsForIssue(t *testing.T) {
-	var tests = []struct {
+			deleteP = []struct {
 		name        string
 		httpStubs   func(*httpmock.Registry)
 		expectItems ProjectItems
@@ -120,18 +78,7 @@ func TestProjectsV2ItemsForIssue(t *testing.T) {
 		},
 		{
 			name: "fails to retrieve project items for issue",
-			httpStubs: func(reg *httpmock.Registry) {
-				reg.Register(
-					httpmock.GraphQL(`query IssueProjectItems\b`),
-					httpmock.GraphQLQuery(`{"data":{}, "errors": [{"message": "some gql error"}]}`,
-						func(query string, inputs map[string]interface{}) {}),
-				)
-			},
-			expectError: true,
-		},
-	}
-
-	for _, tt := range tests {
+			httpStubs: func(reg *http {
 		t.Run(tt.name, func(t *testing.T) {
 			reg := &httpmock.Registry{}
 			defer reg.Verify(t)
@@ -139,21 +86,7 @@ func TestProjectsV2ItemsForIssue(t *testing.T) {
 				tt.httpStubs(reg)
 			}
 			client := newTestClient(reg)
-			repo, _ := ghrepo.FromFullName("OWNER/REPO")
-			issue := &Issue{Number: 1}
-			err := ProjectsV2ItemsForIssue(client, repo, issue)
-			if tt.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-			assert.Equal(t, tt.expectItems, issue.ProjectItems)
-		})
-	}
-}
-
-func TestProjectsV2ItemsForPullRequest(t *testing.T) {
-	var tests = []struct {
+			repo, _ := ghrepo.FromFullNa = []struct {
 		name        string
 		httpStubs   func(*httpmock.Registry)
 		expectItems ProjectItems
@@ -200,18 +133,7 @@ func TestProjectsV2ItemsForPullRequest(t *testing.T) {
                                   {
                                     "id": "PVTI_lADOB-vozM4AVk16zgK6U50",
                                     "project": {
-                                      "id": "PVT_kwDOB-vozM4AVk16",
-                                      "title": "Test Project"
-                                    },
-                                    "status": {
-                                      "optionId": "47fc9ee4",
-                                      "name": "In Progress"
-                                    }
-                                  }
-                                ],
-                                "pageInfo": {
-                                  "hasNextPage": false,
-                                  "endCursor": "MQ"
+                                      "i
                                 }
                               }
                             }
@@ -228,22 +150,7 @@ func TestProjectsV2ItemsForPullRequest(t *testing.T) {
 			expectItems: ProjectItems{
 				Nodes: []*ProjectV2Item{
 					{
-						ID: "PVTI_lADOB-vozM4AVk16zgK6U50",
-						Project: ProjectV2ItemProject{
-							ID:    "PVT_kwDOB-vozM4AVk16",
-							Title: "Test Project",
-						},
-						Status: ProjectV2ItemStatus{
-							OptionID: "47fc9ee4",
-							Name:     "In Progress",
-						},
-					},
-				},
-			},
-		},
-	}
-
-	for _, tt := range tests {
+						I {
 		t.Run(tt.name, func(t *testing.T) {
 			reg := &httpmock.Registry{}
 			defer reg.Verify(t)
@@ -251,21 +158,7 @@ func TestProjectsV2ItemsForPullRequest(t *testing.T) {
 				tt.httpStubs(reg)
 			}
 			client := newTestClient(reg)
-			repo, _ := ghrepo.FromFullName("OWNER/REPO")
-			pr := &PullRequest{Number: 1}
-			err := ProjectsV2ItemsForPullRequest(client, repo, pr)
-			if tt.expectError {
-				require.Error(t, err)
-			} else {
-				require.NoError(t, err)
-			}
-			require.Equal(t, tt.expectItems, pr.ProjectItems)
-		})
-	}
-}
-
-func TestProjectsV2IgnorableError(t *testing.T) {
-	var tests = []struct {
+			repo, _ := ghrepo.FromFullName("OW = []struct {
 		name      string
 		errMsg    string
 		expectOut bool
@@ -288,20 +181,7 @@ func TestProjectsV2IgnorableError(t *testing.T) {
 		{
 			name:      "issue projectItems field error",
 			errMsg:    "Field 'projectItems' doesn't exist on type 'Issue'",
-			expectOut: true,
-		},
-		{
-			name:      "pullRequest projectItems field error",
-			errMsg:    "Field 'projectItems' doesn't exist on type 'PullRequest'",
-			expectOut: true,
-		},
-		{
-			name:      "other error",
-			errMsg:    "some other graphql error message",
-			expectOut: false,
-		},
-	}
-	for _, tt := range tests {
+			expectOut: tru {
 		t.Run(tt.name, func(t *testing.T) {
 			err := errors.New(tt.errMsg)
 			out := ProjectsV2IgnorableError(err)
