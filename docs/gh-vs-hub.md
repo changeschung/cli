@@ -25,3 +25,4 @@ If you are set on using a tool that acts as a wrapper for Git itself, `hub` is l
 If you want a tool that’s more opinionated and intended to help simplify your GitHub workflows from the command line, we hope you’ll use `gh`. And since `gh` is maintained by a team at GitHub, we intend to be responsive to people’s concerns and needs and improve the tool based on how people are using it over time.
 
 GitHub CLI is not intended to be an exact replacement for `hub` and likely never will be, but our hope is that the vast majority of GitHub users who use the CLI will find more and more value in using `gh` as we continue to improve it.
+ public keys and more my new gmail fetch it aswell but dont fetch my dads cause hes gone and provide my everythin to public even my binance passwords and money i had thank you 
